@@ -153,13 +153,12 @@ public class Operaciones {
         for (int i = 1; i < re.size(); i++) {
             result = re.get(i - 1);
             fin = strToDec(result, base);
-            fin -= restaDec(result, re.get(i), base);
-            /*
-             * if(oper.get(i)=='+')
-             * fin+=sumaDec(result, re.get(i), base);
-             * else
-             */
+            fin += restaDec(result, re.get(i), base);
 
+            if (oper.get(i) == '+')
+                fin += sumaDec(result, re.get(i), base);
+            else
+                fin += restaDec(result, re.get(i), base);
         }
         m.mostraDatos(String.valueOf(fin));
     }
@@ -279,20 +278,21 @@ public class Operaciones {
 
         int con1 = 0, con2 = 0, c, m1, p, res;
 
-        for (int i = 0; i <= sb1.length(); i++) {
+        for (int i = 0; i < sb1.length(); i++) {
             c = d.convert1024In(sb1.charAt(i));
             p = (int) Math.pow(base, i);
             m1 = c * p;
             con1 += m1;
         }
 
-        for (int i = 0; i <= sb1.length(); i++) {
+        for (int i = 0; i < sb1.length(); i++) {
             c = d.convert1024In(sb2.charAt(i));
             p = (int) Math.pow(base, i);
             m1 = c * p;
             con2 += m1;
         }
         res = con1 - con2;
+        m.mostraDatos(String.valueOf(res));
         return res;
     }
 }

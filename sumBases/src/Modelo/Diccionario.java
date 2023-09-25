@@ -11,13 +11,16 @@ public class Diccionario {
                 fin = (int) 51;
                 break;
             case '¥':
+                fin = (int) 108;
+                break;
+            case '⌂':
                 fin = (int) 109;
                 break;
             case 'µ':
                 fin = (int) 116;
                 break;
             case '·':
-                fin = (int) 117;
+                fin = (int) 124;
                 break;
             case 'É':
                 fin = (int) 122;
@@ -26,10 +29,11 @@ public class Diccionario {
                 fin = (int) 123;
                 break;
             case '¿':
-                fin = (int) 124;
+                fin = (int) 125;
                 break;
             case '?':
-                fin = (int) 125;
+            case 131:
+                fin = (int) 126;
                 break;
             case ' ':
                 fin = (int) 130;
@@ -54,18 +58,20 @@ public class Diccionario {
                     input -= 60;
                 else if (input > 110 && input <= 122)
                     input -= 59;
-                else if (input >= 33 && input < 65)
+                else if (input >= 33 && input < 45)
                     input += 31;
+                else if (input > 45 && input < 65)
+                    input += 30;
                 else if (input >= 91 && input < 97)
-                    input += 5;
+                    input += 4;
                 else if (input >= 123 && input < 127)
-                    input -= 21;
+                    input -= 22;
                 else if (input >= 161 && input < 164)
-                    input -= 55;
+                    input -= 56;
                 else if (input >= 176 && input < 179)
                     input -= 63;
-                else if (input >= 186 && input < 190)
-                    input -= 68;
+                else if (input >= 186 && input < 191)
+                    input -= 69;
                 else if (input >= 196 && input < 200)
                     input -= 70;
                 else if (input >= 220 && input < 227)
@@ -91,13 +97,16 @@ public class Diccionario {
             case 51:
                 fin = 'ñ';
                 break;
-            case 109:
+            case 108:
                 fin = '¥';
+                break;
+            case 109:
+                fin = '⌂';
                 break;
             case 116:
                 fin = 'µ';
                 break;
-            case 117:
+            case 124:
                 fin = '·';
                 break;
             case 122:
@@ -106,10 +115,10 @@ public class Diccionario {
             case 123:
                 fin = 'Ö';
                 break;
-            case 124:
+            case 125:
                 fin = '¿';
                 break;
-            case 125:
+            case 126:
                 fin = '?';
                 break;
             case 130:
@@ -145,8 +154,8 @@ public class Diccionario {
                     input += 55;
                 else if (input >= 113 && input < 116)
                     input += 63;
-                else if (input >= 118 && input < 122)
-                    input += 68;
+                else if (input >= 117 && input < 122)
+                    input += 69;
                 else if (input >= 126 && input < 130)
                     input += 70;
                 else if (input >= 131 && input < 138)
