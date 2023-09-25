@@ -15,12 +15,12 @@ public class SumBases {
     // private static ArrayList<Integer> arr2 = new ArrayList<Integer>();
 
     public static void main(String[] args) {
-        // o.askNum();
+        o.askNum();
 
-        // o.askOp();
-        // o.arrFiller();
-        // o.operar();
-        // o.resTot();
+        o.askOp();
+        o.arrFiller();
+        o.operar();
+        o.resTot();
 
     }
 
