@@ -104,6 +104,7 @@ public class Operaciones {
                     if (con1 == con2)
                         re.add(s);
                     sb.delete(0, sb.length());
+                    con1 = 0;
                     break;
                 case '-':
                     r = resta(op1, op2, base);
@@ -148,17 +149,18 @@ public class Operaciones {
     }
 
     public static void resTot() {
-        int fin = 0, base = a;
-        String result;
-        for (int i = 1; i < re.size(); i++) {
-            result = re.get(i - 1);
-            fin = strToDec(result, base);
-            fin += restaDec(result, re.get(i), base);
+        int fin = strToDec(re.get(0), a);
+        String result, op;
+        for (int i = 2; i < num.size(); i++) {
+            result = re.get(i - 2);
+            op = num.get(i);
 
-            if (oper.get(i) == '+')
-                fin += sumaDec(result, re.get(i), base);
+            // fin += restaDec(result, re.get(i), base);
+
+            if (oper.get(i - 1) == '+')
+                fin = sumaDec(result, op, a);
             else
-                fin += restaDec(result, re.get(i), base);
+                fin = restaDec(result, op, a);
         }
         m.mostraDatos(String.valueOf(fin));
     }
