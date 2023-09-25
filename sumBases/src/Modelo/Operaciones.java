@@ -122,11 +122,11 @@ public class Operaciones {
                     if (con1 == con2)
                         re.add(r);
                     sb.delete(0, sb.length());
+                    con1 = 0;
                     break;
                 default:
                     m.mostraDatos("Signo no válido.");
                     System.exit(0);
-                    ;
             }
         }
     }
@@ -149,8 +149,10 @@ public class Operaciones {
     }
 
     public static void resTot() {
-        int fin = strToDec(re.get(0), a);
-        String result, op;
+        StringBuilder sb = new StringBuilder();
+        int fin = strToDec(re.get(0), a), divr, remd;
+        String result, op, appndr = "";
+        char remh;
         for (int i = 2; i < num.size(); i++) {
             result = re.get(i - 2);
             op = num.get(i);
@@ -162,7 +164,17 @@ public class Operaciones {
             else
                 fin = restaDec(result, op, a);
         }
-        m.mostraDatos(String.valueOf(fin));
+        m.mostraDatos("Total en decimal: " + String.valueOf(fin));
+        divr = fin;
+        do {
+            remd = divr % a;
+            remh = d.convertIn1024(remd);
+            divr = (int) Math.floor(divr / a);
+            appndr = appndr.concat(String.valueOf(remh));
+        } while (divr > 0);
+        sb.append(appndr);
+        sb.reverse();
+        m.mostraDatos("Total en base inicial: " + sb.toString());
     }
 
     public static String suma(String st1, String st2, int base) {
@@ -235,7 +247,7 @@ public class Operaciones {
             s = s.concat(String.valueOf(d.convertIn1024(arr.get(j))));
 
         }
-        m.mostraDatos(s);
+        m.mostraDatos("Resultado resta directa en la base " + s);
         return s;
     }
 
@@ -280,21 +292,21 @@ public class Operaciones {
 
         int con1 = 0, con2 = 0, c, m1, p, res;
 
-        for (int i = 0; i < sb1.length(); i++) {
+        for (int i = 0; i < st1.length(); i++) {
             c = d.convert1024In(sb1.charAt(i));
             p = (int) Math.pow(base, i);
             m1 = c * p;
             con1 += m1;
         }
 
-        for (int i = 0; i < sb1.length(); i++) {
+        for (int i = 0; i < st2.length(); i++) {
             c = d.convert1024In(sb2.charAt(i));
             p = (int) Math.pow(base, i);
             m1 = c * p;
             con2 += m1;
         }
         res = con1 - con2;
-        m.mostraDatos(String.valueOf(res));
+        // m.mostraDatos(String.valueOf(res));
         return res;
     }
 }

@@ -21,7 +21,6 @@ public class SumBases {
         o.arrFiller();
         o.operar();
         o.resTot();
-
     }
 
 }
