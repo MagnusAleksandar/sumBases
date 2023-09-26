@@ -67,8 +67,8 @@ public class Operaciones {
     public static void arrFiller() {
         StringBuilder sb = new StringBuilder();
 
-        if (num.get(0).charAt(0) != '-') {
-            for (int i = 1; i < num.size(); i++) {
+        for (int i = 1; i < num.size(); i++) {
+            if (num.get(i).charAt(0) != '-' && num.get(i - 1).charAt(0) != '-') {
                 if (num.get(i).length() < num.get(i - 1).length()) {
                     sb.append(num.get(i));
                     sb.reverse();
@@ -120,10 +120,17 @@ public class Operaciones {
                     if (op1.charAt(0) == '-' && op2.charAt(0) != '-') {
                         r = r.concat(String.valueOf('-'));
                         r = r.concat(String.valueOf(suma(op1, op2, a)));
-                        m.mostraDatos("Resultado resta directa en la base: " + r);
-                    } else {
+                    } else if (op1.charAt(0) == '-' && op2.charAt(0) == '-') {
+                        if (op1.charAt(1) > op2.charAt(1)) {
+                            r = r.concat(String.valueOf('-'));
+                            r = r.concat(resta(op1, op2, a));
+                        } else
+                            r = resta(op1, op2, a);
+                    } else if (op1.charAt(0) != '-' && op2.charAt(0) != '-')
                         r = resta(op1, op2, a);
-                    }
+                    else if (op2.charAt(0) == '-' && op1.charAt(0) != '-')
+                        r = suma(op1, op2, a);
+                    m.mostraDatos("Resultado resta directa en la base: " + r);
                     sb.append(r);
                     if (sb.charAt(0) != '-') {
                         sb.reverse();
@@ -177,15 +184,18 @@ public class Operaciones {
     public static void resTot() {
         int fin = 0, base = a;
         String result;
-        for (int i = 1; i < re.size(); i++) {
-            result = re.get(i - 1);
-            fin = strToDec(result, base);
-            if (oper.get(i) == '+')
-                fin += sumaDec(result, re.get(i), base);
-            else
-                fin -= restaDec(result, re.get(i), base);
-        }
-        m.mostraDatos(String.valueOf(fin));
+        if (re.size() > 1) {
+            for (int i = 1; i < re.size(); i++) {
+                result = re.get(i - 1);
+                fin = strToDec(result, base);
+                if (oper.get(i) == '+')
+                    fin += sumaDec(result, re.get(i), base);
+                else
+                    fin -= restaDec(result, re.get(i), base);
+            }
+            m.mostraDatos(String.valueOf(fin));
+        } else
+            System.exit(0);
     }
 
     public static String suma(String st1, String st2, int base) {
@@ -197,6 +207,9 @@ public class Operaciones {
         sb1.reverse();
         StringBuilder sb2 = new StringBuilder();
         sb2.append(st2);
+        if (sb2.charAt(0) == '-') {
+            sb2.deleteCharAt(0);
+        }
         sb2.reverse();
 
         int ch, carry = 0;
