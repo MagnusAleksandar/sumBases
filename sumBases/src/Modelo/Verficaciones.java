@@ -20,7 +20,7 @@ public class Verficaciones {
         boolean flag = true;
         int num;
         if (st.charAt(0) == '-') {
-            for (int i = 1; i <= st.length(); i++) {
+            for (int i = 1; i < st.length(); i++) {
                 num = d.convert1024In(st.charAt(i));
                 if (base <= num) {
                     flag = false;

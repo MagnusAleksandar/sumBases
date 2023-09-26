@@ -125,12 +125,22 @@ public class Operaciones {
                         r = resta(op1, op2, a);
                     }
                     sb.append(r);
-                    sb.reverse();
-                    for (int j = 0; j < r.length(); j++) {
-                        c = d.convert1024In(sb.charAt(j));
-                        p = (int) Math.pow(base, j);
-                        m1 = c * p;
-                        con1 += m1;
+                    if (sb.charAt(0) != '-') {
+                        sb.reverse();
+                        for (int j = 0; j < r.length(); j++) {
+                            c = d.convert1024In(sb.charAt(j));
+                            p = (int) Math.pow(base, j);
+                            m1 = c * p;
+                            con1 += m1;
+                        }
+                    } else {
+                        sb.reverse();
+                        for (int j = 0; j < sb.length() - 1; j++) {
+                            c = d.convert1024In(sb.charAt(j));
+                            p = (int) Math.pow(base, j);
+                            m1 = c * p;
+                            con1 += m1;
+                        }
                     }
                     if (op1.charAt(0) == '-' && op2.charAt(0) != '-')
                         con2 = sumaDec(op1, op2, base);
