@@ -50,6 +50,23 @@ public class Operaciones {
         }
     }
 
+    public static String potnt(int dec) {
+        int rem;
+        String fin = "";
+        char ch;
+        do {
+            rem = dec % a;
+            arr.add(rem);
+            dec = (int) Math.floor(dec / a);
+        } while (dec > 0);
+        Collections.reverse(arr);
+        for (int i = 0; i < arr.size(); i++) {
+            ch = d.convertIn1024(arr.get(i));
+            fin = fin.concat(String.valueOf(ch));
+        }
+        return fin;
+    }
+
     public static void askOp() {
         char sym;
         for (int i = 1; i < num.size(); i++) {
@@ -93,50 +110,51 @@ public class Operaciones {
     public static void operar() {
         StringBuilder sb = new StringBuilder("");
         String op1, op2, s, r = "";
-        int con1 = 0, con2, c, p, m1, base = a;
+        int con1 = 0, con2, c, p, m1;
 
         for (int i = 1; i < num.size(); i++) {
             op1 = num.get(i - 1);
             op2 = num.get(i);
             switch (oper.get(i - 1)) {
                 case '+':
-                    s = suma(op1, op2, base);
+                    s = suma(op1, op2);
                     m.mostraDatos("Resultado suma directa en la base: " + s);
                     sb.append(s);
                     sb.reverse();
                     for (int j = 0; j < s.length(); j++) {
                         c = d.convert1024In(sb.charAt(j));
-                        p = (int) Math.pow(base, j);
+                        p = (int) Math.pow(a, j);
                         m1 = c * p;
                         con1 += m1;
                     }
-                    con2 = sumaDec(op1, op2, base);
+                    con2 = sumaDec(op1, op2);
                     v.confirm(con1, con2);
                     if (con1 == con2)
                         re.add(s);
                     sb.delete(0, sb.length());
+                    con1 = 0;
                     break;
                 case '-':
                     if (op1.charAt(0) == '-' && op2.charAt(0) != '-') {
                         r = r.concat(String.valueOf('-'));
-                        r = r.concat(String.valueOf(suma(op1, op2, a)));
+                        r = r.concat(String.valueOf(suma(op1, op2)));
                     } else if (op1.charAt(0) == '-' && op2.charAt(0) == '-') {
                         if (op1.charAt(1) > op2.charAt(1)) {
                             r = r.concat(String.valueOf('-'));
-                            r = r.concat(resta(op1, op2, a));
+                            r = r.concat(resta(op1, op2));
                         } else
-                            r = resta(op1, op2, a);
+                            r = resta(op1, op2);
                     } else if (op1.charAt(0) != '-' && op2.charAt(0) != '-')
-                        r = resta(op1, op2, a);
+                        r = resta(op1, op2);
                     else if (op2.charAt(0) == '-' && op1.charAt(0) != '-')
-                        r = suma(op1, op2, a);
+                        r = suma(op1, op2);
                     m.mostraDatos("Resultado resta directa en la base: " + r);
                     sb.append(r);
                     if (sb.charAt(0) != '-') {
                         sb.reverse();
                         for (int j = 0; j < r.length(); j++) {
                             c = d.convert1024In(sb.charAt(j));
-                            p = (int) Math.pow(base, j);
+                            p = (int) Math.pow(a, j);
                             m1 = c * p;
                             con1 += m1;
                         }
@@ -144,19 +162,20 @@ public class Operaciones {
                         sb.reverse();
                         for (int j = 0; j < sb.length() - 1; j++) {
                             c = d.convert1024In(sb.charAt(j));
-                            p = (int) Math.pow(base, j);
+                            p = (int) Math.pow(a, j);
                             m1 = c * p;
                             con1 += m1;
                         }
                     }
-                    if (op1.charAt(0) == '-' && op2.charAt(0) != '-')
-                        con2 = sumaDec(op1, op2, base);
+                    if (op1.charAt(0) == '-' && op2.charAt(0) != '-' || op1.charAt(0) != '-' && op2.charAt(0) == '-')
+                        con2 = sumaDec(op1, op2);
                     else
-                        con2 = restaDec(op1, op2, base);
+                        con2 = restaDec(op1, op2);
                     v.confirm(con1, con2);
                     if (con1 == con2)
                         re.add(r);
                     sb.delete(0, sb.length());
+                    con1 = 0;
                     break;
                 default:
                     m.mostraDatos("Signo no válido.");
@@ -165,7 +184,7 @@ public class Operaciones {
         }
     }
 
-    public static int strToDec(String st, int base) {
+    public static int strToDec(String st) {
         StringBuilder sb = new StringBuilder();
         sb.append(st);
         sb.reverse();
@@ -174,7 +193,7 @@ public class Operaciones {
 
         for (int i = 0; i < st.length(); i++) {
             ch = d.convert1024In(sb.charAt(i));
-            pot = (int) Math.pow(base, i);
+            pot = (int) Math.pow(a, i);
             res = ch * pot;
             fin += res;
         }
@@ -182,23 +201,24 @@ public class Operaciones {
     }
 
     public static void resTot() {
-        int fin = 0, base = a;
+        int fin = 0;
         String result;
         if (re.size() > 1) {
             for (int i = 1; i < re.size(); i++) {
                 result = re.get(i - 1);
-                fin = strToDec(result, base);
+                fin = strToDec(result);
                 if (oper.get(i) == '+')
-                    fin += sumaDec(result, re.get(i), base);
+                    fin += sumaDec(result, re.get(i));
                 else
-                    fin -= restaDec(result, re.get(i), base);
+                    fin -= restaDec(result, re.get(i));
             }
-            m.mostraDatos(String.valueOf(fin));
+            m.mostraDatos("Resultado total en base 10: " + String.valueOf(fin));
+            potnt(fin);
         } else
             System.exit(0);
     }
 
-    public static String suma(String st1, String st2, int base) {
+    public static String suma(String st1, String st2) {
         StringBuilder sb1 = new StringBuilder();
         sb1.append(st1);
         if (sb1.charAt(0) == '-') {
@@ -219,11 +239,11 @@ public class Operaciones {
         for (int i = 0; i < sb1.length(); i++) {
             ch = carry + d.convert1024In(sb1.charAt(i)) + d.convert1024In(sb2.charAt(i));
 
-            if (ch < base)
+            if (ch < a)
                 carry = 0;
             else {
                 carry = 1;
-                ch -= base;
+                ch -= a;
             }
             System.out.println(carry + " + " + d.convert1024In(sb1.charAt(i)) + " + " + d.convert1024In(sb2.charAt(i))
                     + " = " + ch);
@@ -240,7 +260,7 @@ public class Operaciones {
         return s;
     }
 
-    public static String resta(String st1, String st2, int base) {
+    public static String resta(String st1, String st2) {
         StringBuilder sb1 = new StringBuilder();
         sb1.append(st1);
         sb1.reverse();
@@ -260,7 +280,7 @@ public class Operaciones {
             if (c1 >= c2 && ch >= 0)
                 carry = 0;
             if (c1 < c2 || ch < 0) {
-                ch += base;
+                ch += a;
                 carry = -1;
             }
             System.out.println(c1 + " - " + c2 + " + " + carry + " = " + ch);
@@ -273,41 +293,10 @@ public class Operaciones {
             s = s.concat(String.valueOf(d.convertIn1024(arr.get(j))));
 
         }
-        m.mostraDatos(s);
         return s;
     }
 
-    public static int sumaDec(String st1, String st2, int base) {
-        StringBuilder sb1 = new StringBuilder();
-        sb1.append(st1);
-        if (sb1.charAt(0) == '-') {
-            sb1.deleteCharAt(0);
-        }
-        sb1.reverse();
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append(st2);
-        sb2.reverse();
-
-        int con1 = 0, con2 = 0, c, m1, p, res;
-
-        for (int i = 0; i < sb1.length(); i++) {
-            c = d.convert1024In(sb1.charAt(i));
-            p = (int) Math.pow(base, i);
-            m1 = c * p;
-            con1 += m1;
-        }
-
-        for (int j = 0; j < sb2.length(); j++) {
-            c = d.convert1024In(sb2.charAt(j));
-            p = (int) Math.pow(base, j);
-            m1 = c * p;
-            con2 += m1;
-        }
-        res = con1 + con2;
-        return res;
-    }
-
-    public static int restaDec(String st1, String st2, int base) {
+    public static int sumaDec(String st1, String st2) {
         StringBuilder sb1 = new StringBuilder();
         sb1.append(st1);
         if (sb1.charAt(0) == '-')
@@ -323,14 +312,45 @@ public class Operaciones {
 
         for (int i = 0; i < sb1.length(); i++) {
             c = d.convert1024In(sb1.charAt(i));
-            p = (int) Math.pow(base, i);
+            p = (int) Math.pow(a, i);
+            m1 = c * p;
+            con1 += m1;
+        }
+
+        for (int j = 0; j < sb2.length(); j++) {
+            c = d.convert1024In(sb2.charAt(j));
+            p = (int) Math.pow(a, j);
+            m1 = c * p;
+            con2 += m1;
+        }
+        res = con1 + con2;
+        return res;
+    }
+
+    public static int restaDec(String st1, String st2) {
+        StringBuilder sb1 = new StringBuilder();
+        sb1.append(st1);
+        if (sb1.charAt(0) == '-')
+            sb1.deleteCharAt(0);
+        sb1.reverse();
+        StringBuilder sb2 = new StringBuilder();
+        sb2.append(st2);
+        if (sb2.charAt(0) == '-')
+            sb2.deleteCharAt(0);
+        sb2.reverse();
+
+        int con1 = 0, con2 = 0, c, m1, p, res;
+
+        for (int i = 0; i < sb1.length(); i++) {
+            c = d.convert1024In(sb1.charAt(i));
+            p = (int) Math.pow(a, i);
             m1 = c * p;
             con1 += m1;
         }
 
         for (int i = 0; i < sb2.length(); i++) {
             c = d.convert1024In(sb2.charAt(i));
-            p = (int) Math.pow(base, i);
+            p = (int) Math.pow(a, i);
             m1 = c * p;
             con2 += m1;
         }
