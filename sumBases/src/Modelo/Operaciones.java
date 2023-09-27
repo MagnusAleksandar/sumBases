@@ -7,6 +7,7 @@ import Vista.Most;
 
 public class Operaciones {
     private static ArrayList<Integer> arr = new ArrayList<Integer>();
+    private static ArrayList<Integer> arr1 = new ArrayList<Integer>();
     private static ArrayList<String> num = new ArrayList<>();
     private static ArrayList<Character> oper = new ArrayList<>();
     private static ArrayList<String> re = new ArrayList<>();
@@ -51,17 +52,18 @@ public class Operaciones {
     }
 
     public static String potnt(int dec) {
-        int rem;
+        int rem, a = 16;
         String fin = "";
         char ch;
+
         do {
             rem = dec % a;
-            arr.add(rem);
+            arr1.add(rem);
             dec = (int) Math.floor(dec / a);
         } while (dec > 0);
-        Collections.reverse(arr);
-        for (int i = 0; i < arr.size(); i++) {
-            ch = d.convertIn1024(arr.get(i));
+        Collections.reverse(arr1);
+        for (int i = 0; i < arr1.size(); i++) {
+            ch = d.convertIn1024(arr1.get(i));
             fin = fin.concat(String.valueOf(ch));
         }
         return fin;
@@ -213,7 +215,7 @@ public class Operaciones {
                     fin -= restaDec(result, re.get(i));
             }
             m.mostraDatos("Resultado total en base 10: " + String.valueOf(fin));
-            potnt(fin);
+            m.mostraDatos("Resultado total en base original: " + potnt(fin));
         } else
             System.exit(0);
     }

@@ -16,7 +16,7 @@ public class SumBases {
         o.arrFiller();
         o.operar();
         o.resTot();
-
+        // System.out.println(o.potnt(9753));
     }
 
 }
