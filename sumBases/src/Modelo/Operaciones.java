@@ -111,7 +111,7 @@ public class Operaciones {
 
     public static void operar() {
         StringBuilder sb = new StringBuilder("");
-        String op1, op2, s, r = "";
+        String op1, op2, s = "", r = "";
         int con1 = 0, con2, c, p, m1;
 
         for (int i = 1; i < num.size(); i++) {
@@ -119,17 +119,49 @@ public class Operaciones {
             op2 = num.get(i);
             switch (oper.get(i - 1)) {
                 case '+':
-                    s = suma(op1, op2);
+                    if (op1.charAt(0) != '-' && op2.charAt(0) != '-')
+                        s = suma(op1, op2);
+                    else if (op1.charAt(0) == '-' && op2.charAt(0) != '-') {
+                        if (op1.charAt(1) > op2.charAt(0)) {
+                            s = s.concat(String.valueOf('-'));
+                            s = s.concat(resta(op1, op2));
+                        }
+                    }
                     m.mostraDatos("Resultado suma directa en la base: " + s);
                     sb.append(s);
-                    sb.reverse();
-                    for (int j = 0; j < s.length(); j++) {
-                        c = d.convert1024In(sb.charAt(j));
-                        p = (int) Math.pow(a, j);
-                        m1 = c * p;
-                        con1 += m1;
+                    if (sb.charAt(0) != '-') {
+                        sb.reverse();
+                        for (int j = 0; j < sb.length(); j++) {
+                            c = d.convert1024In(sb.charAt(j));
+                            p = (int) Math.pow(a, j);
+                            m1 = c * p;
+                            con1 += m1;
+                        }
+                    } else {
+                        sb.reverse();
+                        for (int j = 0; j < sb.length() - 1; j++) {
+                            c = d.convert1024In(sb.charAt(j));
+                            p = (int) Math.pow(a, j);
+                            m1 = c * p;
+                            con1 += m1;
+                        }
                     }
-                    con2 = sumaDec(op1, op2);
+                    if (op1.charAt(0) == '-' && op2.charAt(0) == '-' || op1.charAt(0) != '-' && op2.charAt(0) != '-')
+                        con2 = sumaDec(op1, op2);
+                    else
+                        con2 = restaDec(op1, op2);
+                    /*
+                     * if (op1.charAt(0) == '-' && op2.charAt(0) == '-' || op1.charAt(0) != '-' &&
+                     * op2.charAt(0) != '-')
+                     * con2 = sumaDec(op1, op2);
+                     * else
+                     * con2 = restaDec(op1, op2);
+                     * v.confirm(con1, con2);
+                     * if (con1 == con2)
+                     * re.add(r);
+                     * sb.delete(0, sb.length());
+                     * con1 = 0;
+                     */
                     v.confirm(con1, con2);
                     if (con1 == con2)
                         re.add(s);
@@ -269,18 +301,28 @@ public class Operaciones {
         int ch, carry = 0, c1, c2;
         String s = "";
         arr.clear();
-        if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0))) {
+
+        if (st1.charAt(0) == '-') {
+            sb1.append(st1);
+            sb1.deleteCharAt(0);
+            sb2.append(st2);
+        } else if (st2.charAt(0) == '-') {
+            sb2.append(st2);
+            sb2.deleteCharAt(0);
+            sb1.append(st1);
+        }
+        if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0))
+                || sb1.length() < st2.length()) {
             s = s.concat("-");
             sb1.append(st2);
             sb1.reverse();
             sb2.append(st1);
             sb2.reverse();
         } else {
-            sb1.append(st1);
             sb1.reverse();
-            sb2.append(st2);
             sb2.reverse();
         }
+
         for (int i = 0; i < sb1.length(); i++) {
             c1 = d.convert1024In(sb1.charAt(i));
             c2 = d.convert1024In(sb2.charAt(i));
@@ -363,6 +405,10 @@ public class Operaciones {
             con2 += m1;
         }
         res = con1 - con2;
+        sb1.reverse();
+        sb2.reverse();
+        if (st1.charAt(0) == '-' && sb1.charAt(0) > sb2.charAt(0))
+            res = 0 - res;
         return res;
     }
 }
