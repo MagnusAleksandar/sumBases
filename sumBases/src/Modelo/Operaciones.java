@@ -264,17 +264,24 @@ public class Operaciones {
 
     public static String resta(String st1, String st2) {
         StringBuilder sb1 = new StringBuilder();
-        sb1.append(st1);
-        sb1.reverse();
         StringBuilder sb2 = new StringBuilder();
-        sb2.append(st2);
-        sb2.reverse();
 
         int ch, carry = 0, c1, c2;
         String s = "";
         arr.clear();
-
-        for (int i = 0; i < st1.length(); i++) {
+        if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0))) {
+            s = s.concat("-");
+            sb1.append(st2);
+            sb1.reverse();
+            sb2.append(st1);
+            sb2.reverse();
+        } else {
+            sb1.append(st1);
+            sb1.reverse();
+            sb2.append(st2);
+            sb2.reverse();
+        }
+        for (int i = 0; i < sb1.length(); i++) {
             c1 = d.convert1024In(sb1.charAt(i));
             c2 = d.convert1024In(sb2.charAt(i));
             ch = c1 - c2 + carry;
@@ -289,8 +296,7 @@ public class Operaciones {
             arr.add(ch);
         }
         Collections.reverse(arr);
-        if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0)))
-            s = s.concat("-");
+
         for (int j = 0; j < arr.size(); j++) {
             s = s.concat(String.valueOf(d.convertIn1024(arr.get(j))));
 

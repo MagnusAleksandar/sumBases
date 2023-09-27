@@ -7,7 +7,7 @@ public class Verficaciones {
     private static Diccionario d = new Diccionario();
 
     public static void confirm(int in, int dec) {
-        if (in == dec) {
+        if (in == dec || in == Math.abs(dec)) {
             m.mostraDatos("Resultado suma decimal directa: " + dec);
             m.mostraDatos("Coinciden");
         } else {
