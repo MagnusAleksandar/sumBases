@@ -150,18 +150,6 @@ public class Operaciones {
                         con2 = sumaDec(op1, op2);
                     else
                         con2 = restaDec(op1, op2);
-                    /*
-                     * if (op1.charAt(0) == '-' && op2.charAt(0) == '-' || op1.charAt(0) != '-' &&
-                     * op2.charAt(0) != '-')
-                     * con2 = sumaDec(op1, op2);
-                     * else
-                     * con2 = restaDec(op1, op2);
-                     * v.confirm(con1, con2);
-                     * if (con1 == con2)
-                     * re.add(r);
-                     * sb.delete(0, sb.length());
-                     * con1 = 0;
-                     */
                     v.confirm(con1, con2);
                     if (con1 == con2)
                         re.add(s);
@@ -302,7 +290,16 @@ public class Operaciones {
         String s = "";
         arr.clear();
 
-        if (st1.charAt(0) == '-') {
+        if (st1.charAt(0) != '-' && st2.charAt(0) != '-') {
+            if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0))) {
+                sb2.append(st1);
+                sb1.append(st2);
+                s = s.concat("-");
+            } else {
+                sb1.append(st1);
+                sb2.append(st2);
+            }
+        } else if (st1.charAt(0) == '-') {
             sb1.append(st1);
             sb1.deleteCharAt(0);
             sb2.append(st2);
@@ -311,17 +308,8 @@ public class Operaciones {
             sb2.deleteCharAt(0);
             sb1.append(st1);
         }
-        if (st1.length() < st2.length() || d.convert1024In(st1.charAt(0)) < d.convert1024In(st2.charAt(0))
-                || sb1.length() < st2.length()) {
-            s = s.concat("-");
-            sb1.append(st2);
-            sb1.reverse();
-            sb2.append(st1);
-            sb2.reverse();
-        } else {
-            sb1.reverse();
-            sb2.reverse();
-        }
+        sb1.reverse();
+        sb2.reverse();
 
         for (int i = 0; i < sb1.length(); i++) {
             c1 = d.convert1024In(sb1.charAt(i));
